@@ -1,0 +1,560 @@
+<!-- 
+Final Project - Data Visualization
+Name: Harry Satriyo Hendharto 
+UCID: 12244891
+-->
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link href='https://fonts.googleapis.com/css?family=Lato:300,900' rel='stylesheet' type='text/css'>
+    <!-- set styles on the top -->
+    <style>
+        .chart-container {
+            max-width: 1050px;
+            /* border: 2px solid red; */
+            margin: 0 auto;
+            /* auto centers the div */
+            font-family: 'Lato';
+            display: grid;
+            grid-template-columns: auto;
+            grid-template-rows: 200px 200px;
+            grid-template-areas: 
+              "headline headline"
+              "bitcoin cryptocurrency";
+        }
+
+        svg {
+            /* border: 2px solid purple; */
+            overflow: visible;
+        }
+        body {
+            font: 10px sans-serif;
+        }
+
+        .headline {
+          grid-area: headline;
+        }
+    
+        .axis path,
+        .axis line {
+          fill: none;
+          stroke: #000;
+          shape-rendering: crispEdges;
+        }
+        
+        .x.axis path {
+          display: none;
+        }
+        
+        .line {
+          fill: none;
+          stroke: steelblue;
+          stroke-width: 1.5px;
+        }
+
+        :root {
+          --accent-color: #E8336D;
+        }
+
+        path.line {
+            fill: none;
+            stroke: lightgrey;
+            stroke-width: 1px;
+          }
+
+        .annotation path {
+          stroke: var(--accent-color);
+          fill: none;
+        }
+
+        .annotation path.connector-arrow, 
+        .title text, .annotation text,
+        .annotation.callout.circle .annotation-subject path{
+          fill: var(--accent-color);
+        }
+        .annotation-note-bg {
+          fill: rgba(255, 255, 255, 0);
+        }
+
+        .annotation-note-title {
+          font-weight: bold;
+        }
+
+        .annotation.xythreshold {
+          cursor: move;
+        }
+
+        .hidden {
+          display: none;
+        }
+
+        text.hover {
+          font-size: .7em;
+        }
+
+        text.title {
+          font-size: 1.1em;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="chart-container">
+        <h1 class="headline">
+            Hype Curve XX
+        </h1>
+        <br>
+        <br>
+        <br>
+        <svg width="1050px" height="5000px"></svg>
+        <br>
+    </div>
+</body>
+
+<script src="https://d3js.org/d3.v6.min.js"></script>
+
+<!-- we're using d3 version 6 (the latest version) for all out work -->
+
+<script>
+
+    let svg = d3.select("body")
+        .select("svg")
+
+    let formatTime = d3.timeParse("%Y-%m-%d")
+
+    let focus = svg.append("g") 
+    .style("display", "none");
+
+
+    // DATA LOADING
+
+    d3.csv("gtrendx.csv").then(function (raw) {
+
+      raw.forEach(function (d) {
+          d.trend = +d.trend
+          d.month = formatTime(d.month)
+      })
+
+
+
+
+
+      function small_multiple(keyword, top_margin) {
+
+        // MARGIN
+
+        let width = 1000;
+        let height = 200; 
+
+        let margin = {
+          top: top_margin,
+          right: 20,
+          bottom: 30-top_margin,
+          left: 20
+        }
+
+
+        let data = raw.filter(d => d.tech == keyword)
+
+        console.log(data)
+
+        let bisectDate = d3.bisector(function(d) { return d.month; }).left;
+
+        // COLOR GROUPING
+
+        let color = d3.scaleOrdinal(d3.schemeCategory10);
+
+        color.domain(["bitcoin", "cryptocurrency", "x5g", "x3d_printer"])
+
+        let technologies = color.domain().map(function(name) {
+          return {
+            name: name,
+            values: data.map(function(d) {
+              return {
+                date: d.month,
+                technology: +d[name]
+              };
+            })
+          };
+        });
+
+        // AXIS
+
+        let x = d3.scaleTime()
+          .domain(d3.extent(data.map(function (d) { return d.month })))
+          .range([margin.left, width - margin.right])
+
+        let y = d3.scaleLinear()
+          .domain([0,100])
+          .range([height - margin.bottom, margin.top])
+
+
+
+        // ADD TIMEFRAME
+
+        // BITCOIN TIMEFRAME
+
+        let timeframes = [
+          {
+            RangeStart: formatTime('2008-04-01'),
+            RangeEnd: formatTime('2017-05-01'),
+            Label: "Innovation",
+            Label2: "Trigger",
+            Color: "#fff1e6"
+          },
+          {
+            RangeStart: formatTime('2017-05-01'),
+            RangeEnd: formatTime('2018-04-01'),
+            Label: "Inflated",
+            Label2: "Expectations",
+            Color: "#fde2e4"
+          },
+          {
+            RangeStart: formatTime('2018-04-01'),
+            RangeEnd: formatTime('2020-05-01'),
+            Label: "Trough of",
+            Label2: "Disillusionment",
+            Color: "#dbe7e4"
+          },
+          {
+            RangeStart: formatTime('2020-04-01'),
+            RangeEnd: formatTime('2021-05-01'),
+            Label: "Slope of",
+            Label2: "Enlightment",
+            Color: "#bcd4e6"
+          },
+          {
+            RangeStart: formatTime('2021-05-01'),
+            RangeEnd: formatTime('2021-12-01'),
+            Label: "Plateau of",
+            Label2: "Productivity",
+            Color: "#c9ada7"
+          },
+        ];
+
+        // 5G TIMEFRAME 
+
+        let timeframes2 = [
+          {
+            RangeStart: formatTime('2008-04-01'),
+            RangeEnd: formatTime('2020-01-01'),
+            Label: "Innovation",
+            Label2: "Trigger",
+            Color: "#fff1e6"
+          },
+          {
+            RangeStart: formatTime('2020-01-01'),
+            RangeEnd: formatTime('2020-08-01'),
+            Label: "Inflated",
+            Label2: "Expectations",
+            Color: "#fde2e4"
+          },
+          {
+            RangeStart: formatTime('2020-08-01'),
+            RangeEnd: formatTime('2021-01-01'),
+            Label: "Trough of",
+            Label2: "Disillusionment",
+            Color: "#dbe7e4"
+          },
+          {
+            RangeStart: formatTime('2021-01-01'),
+            RangeEnd: formatTime('2021-12-01'),
+            Label: "Slope of",
+            Label2: "Enlightment",
+            Color: "#bcd4e6"
+          },
+          {
+            RangeStart: formatTime('2021-05-01'),
+            RangeEnd: formatTime('2021-12-01'),
+            Label: "Plateau of",
+            Label2: "Productivity",
+            Color: "none"
+          },
+        ];
+
+  //       var g = svg.selectAll(".rect")
+  // .data([10,60,120])
+  // .enter()
+  // .append("g")
+  // .classed('rect', true)
+
+        let gTimeframes = svg
+            .selectAll(".rect")
+            .data(timeframes)
+            .enter()
+            .append("g")
+            .attr("class", "timeframe")
+            .classed('rect', true);
+
+        let gTimeframes2 = svg
+          .selectAll(".timeframe2")
+          .data(timeframes2)
+          .enter()
+          .append("g")
+          .attr("class", "timeframe2")
+          .classed('rect', true);
+
+        gTimeframes.append("rect")
+            .attr("x", function(d) { return x(d.RangeStart); })
+            .attr("y", 0)
+            .attr("width", function(d) { return x(d.RangeEnd) - x(d.RangeStart); })
+            .attr("height", height-margin.bottom)
+            .style("fill", function(d) { return d.Color; });
+
+        gTimeframes2.append("rect")
+            .attr("x", function(d) { return x(d.RangeStart); })
+            .attr("y", height )
+            .attr("width", function(d) { return x(d.RangeEnd) - x(d.RangeStart); })
+            .attr("height", height-margin.bottom)
+            .style("fill", function(d) { return d.Color; });
+
+        gTimeframes.append("text")
+            .attr("x", function(d) { return x(d.RangeStart) + 2; })
+            .attr("y", -15)
+            .text(d => d.Label)
+            .append("tspan")
+            .attr("x", function(d) { return x(d.RangeStart) + 2; })
+            .attr("y", -5)
+            .text(d => d.Label2);
+
+        let xAxisSettings = d3.axisBottom(x)
+            .ticks(5)
+            .tickSize(0)
+            .tickPadding(5)
+            .tickFormat(d3.timeFormat("%Y"))
+
+        let yAxisSettings = d3.axisLeft(y) 
+            .ticks(2) 
+            .tickSize(-width) //size of tick lines
+            .tickFormat(d3.format(".0f")) //what format do you want https://github.com/d3/d3-format 
+            .tickPadding(5) //distance from tick labels to tick marks
+
+        // BACKGROUND
+
+        let bg = svg.append("rect")
+            .attr("x", margin.left)
+            .attr("y", 0)
+            .attr("width", width)
+            .attr("height", height)
+            .style("fill", "none")
+
+        // BASELINE
+
+        let baseline = svg.append("line")
+            .attr("x1", margin.left)
+            .attr("x2", width + margin.left)
+            .attr("y1", y(0))
+            .attr("y2", y(0))
+            .style("stroke", "black")
+            .style("stroke-width", "0.2px")
+
+        // AXIS TICKS
+
+        let xAxisTicks = svg.append("g")
+            .attr("class", "x axis") //give each axis a class
+            .call(xAxisSettings)
+            .attr("transform", `translate(0,${height-margin.bottom})`)
+
+        let yAxisTicks = svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxisSettings)
+            .attr("transform", `translate(${margin.left},0)`)
+            .style("stroke-width", "0.2px")
+
+
+
+
+
+
+        // LINE FUNCTION
+
+        let line = d3.line() //define a line function
+            .defined(d => !isNaN(d.month))
+            .x(function (d) { return x(d.month) }) //accessing date 
+            .y(function (d) { return y(d.trend) }) //accesssing value 
+
+
+        let line_path = svg.append("path") //Add a grouping element. It's useful to organize svg elements. https://developer.mozilla.org/en-US/docs/Web/SVG/Element/g
+            .attr("class", "line") // Give circles a class name.
+            .attr("d", line(data))
+            .style("fill", "none")
+            .style("stroke", "black")
+            .style("stroke-width", 1.8)
+
+        // INTERACTIVE
+
+        let bisect = d3.bisector(d => d.month).left
+
+        // TOOLTIP: Circle
+
+        let focus = svg
+          .append('g')
+          .append('circle')
+            .style('fill', 'red')
+            .attr('stroke', 'black')
+            .attr('r', '4')
+            .style('opacity', 0)
+
+        // TOOLTIP: Label
+
+        let focusText = svg
+          .append('g')
+          .append('text')
+            .style('opacity', 0)
+            .attr('text-anchor', 'left')
+            .attr('alignment-baseline', 'middle')
+
+        // TOOLTIP: Vertical Line
+
+        let hoverLineGroup = svg
+          .append("g")
+          .attr("class", "hover-line")
+
+        let hoverLine = hoverLineGroup
+          .append("line")
+            .attr("stroke", "none")
+            .attr("x1", 0).attr("x2", 0)
+            .attr("y1", 0).attr("y2", (2*height+70))
+
+        svg
+          .append('rect')
+          .style('fill', 'none')
+          .style('pointer-events', 'all')
+          .attr('width', width)
+          .attr('height', height)
+          .on('mouseover', mouseover)
+          .on('mousemove', mousemove)
+          .on('mouseout', mouseout)
+
+        svg
+          .append("g")
+          .selectAll("dot")
+          .data(data)
+          .enter()
+          .append("circle")
+            .attr("class", "myCircle")
+            .attr("cx", function(d) { return x(d.month) } )
+            .attr("cy", function(d) { return y(d.bitcoin) } )
+            .attr("r", 2)
+            .attr("stroke", "grey")
+            .attr("stroke-width", 1)
+            .attr("fill", "white")
+            .on("mouseover", mouseover)
+            .on("mousemove", mousemove)
+            .on("mouseleave", mouseout)
+
+        // EVENT ANNOTATIONS
+
+        let tip = svg
+          .append("div")
+          .style("opacity", 0)
+          .attr("class", "tooltip")
+          .style("background-color", "white")
+          .style("border", "solid")
+          .style("border-width", "2px")
+          .style("border-radius", "5px")
+          .style("padding", "5px")
+
+        
+        // MOUSEOVER
+
+        function mouseover() {
+          focus.style('opacity', 1)
+          focusText.style('opacity', 1)
+          hoverLine.style('opacity', 1)
+          hoverLineGroup.style('opacity', 1)
+          tip.style("opacity", 1)
+        }
+
+        let formatDay = d3.timeFormat("%a %x")
+
+        function mousemove(d) {
+          let x0 = x.invert(d3.pointer(event)[0])
+          let i = bisect(data, x0, 1)
+          selectedData = data[i]
+          focus
+            .attr('cx', x(selectedData.month))
+            .attr('cy', y(selectedData.trend))
+          focusText
+            .html(formatDay(selectedData.month) + "  -  " + selectedData.bitcoin)
+            .attr('x', x(selectedData.month)+15)
+            .attr('y', y(80))
+          hoverLine
+            .attr("stroke", "black")
+            .attr("x1", x(selectedData.month))
+            .attr("x2", x(selectedData.month))
+          tip
+            .html("exact: " + d.event)
+            .style("left", (d3.pointer(event)[0]+70) + "px")
+            .style("top", (d3.pointer(event)[1]) + "px")
+        }
+
+        function mouseout() {
+          focus.style('opacity', 0)
+          focusText.style('opacity', 0)
+          hoverLineGroup.style('opacity', 0)
+          tip.style("opacity", 0)
+        }
+
+
+
+          
+      
+            // let baseline = svg.append("line")
+            // .attr("x1", margin.left)
+            // .attr("x2", width + margin.left)
+            // .attr("y1", y(0))
+            // .attr("y2", y(0))
+            // .style("stroke", "black")
+            // .style("stroke-width", "1px")
+
+            // svg.append("text")             
+            // .attr("transform",
+            //         "translate(" + (width/2) + " ," + 
+            //                     (height + margin.top + 20) + ")")
+            // .style("text-anchor", "middle")
+            // .style("fill", "gray")
+            // .attr("font-weight", 700)
+            // .text("Birth Year");
+
+            // svg.append("text")             
+            //     .attr("transform",
+            //             "translate(" + (0.5 * width) + " ," + 
+            //                         (margin.top + 5) + ")")
+            //     .style("text-anchor", "right")
+            //     .style("font-size", 16)
+            //     .style("fill", "#0D7680")
+            //     .text("Celine Dion: My heart will go on");
+
+            // svg.append("text")             
+            //     .attr("transform",
+            //             "translate(" + (0.87 * width) + " ," + 
+            //                         (margin.top + 120) + ")")
+            //     .style("text-anchor", "right")
+            //     .style("font-size", 16)
+            //     .style("fill", "#832b3b")
+            //     .text("R.E.M: Losing My Religion");
+
+            // svg.append("text")             
+            //     .attr("transform",
+            //             "translate(" + (width * 0.025) + " ," + 
+            //                         (height + margin.top + 50) + ")")
+            //     .style("text-anchor", "right")
+            //     .text("Source: Music Quiz")
+            //     .style("fill", "gray")
+            //     .style("font-size", 12);
+
+      }
+
+      small_multiple("bitcoin", 0)
+      small_multiple("x5g", 200)
+
+    })
+
+</script>
+
