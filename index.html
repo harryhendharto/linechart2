@@ -41,78 +41,92 @@ UCID: 12244891
     
         .axis path,
         .axis line {
-          fill: none;
-          stroke: #000;
           shape-rendering: crispEdges;
         }
-        
-        .x.axis path {
-          display: none;
-        }
-        
-        .line {
-          fill: none;
-          stroke: steelblue;
-          stroke-width: 1.5px;
-        }
 
+        .x_axis text{
+          fill: grey;
+        }  
+
+        .y_axis text{
+          fill: none;
+        }  
+        
         :root {
           --accent-color: #E8336D;
         }
 
-        path.line {
-            fill: none;
-            stroke: lightgrey;
-            stroke-width: 1px;
-          }
 
-        .annotation path {
-          stroke: var(--accent-color);
-          fill: none;
+
+        h1 {
+          font-family: 'Lato';
+          font-weight: normal;
+          font-size: 35px;
+          text-align: center;
         }
 
-        .annotation path.connector-arrow, 
-        .title text, .annotation text,
-        .annotation.callout.circle .annotation-subject path{
-          fill: var(--accent-color);
-        }
-        .annotation-note-bg {
-          fill: rgba(255, 255, 255, 0);
+        h2 {
+          font-family: 'Lato';
+          font-weight: normal;
+          font-size: 20px;
+          text-align: center;
+          font-style: italic;
         }
 
-        .annotation-note-title {
+        h3 {
+          font-family: 'Lato';
           font-weight: bold;
+          font-size: 12px;
+          text-align: center;
         }
 
-        .annotation.xythreshold {
-          cursor: move;
+        .source_title {
+          max-width: 1000px;
+          margin: 0 auto;
+          font-family: 'Lato';
+          font-weight: normal;
+          font-size: 13px;
+          text-decoration: underline;
+          margin-left: 1000px;
         }
 
-        .hidden {
-          display: none;
+        .source {
+          max-width: 1000px;
+          margin: 0 auto;
+          font-family: 'Lato';
+          font-weight: normal;
+          font-size: 10px;
+          margin-left: 150px;
         }
-
-        text.hover {
-          font-size: .7em;
-        }
-
-        text.title {
-          font-size: 1.1em;
-        }
-
     </style>
 </head>
 
 <body>
+    <br>
+    <h1>
+      TECHNOLOGY HYPE CYCLE
+    </h1>
+    <h2>
+      What is a technology lifecycle look like?
+    </h2>
+    <br>
+    <h3>
+      BY HARRY SATRIYO HENDHARTO
+    </h3>
+    <br>
+    <br>
+    <br>
+    <br>
     <div class="chart-container">
-        <h1 class="headline">
-            Hype Curve XX
-        </h1>
-        <br>
-        <br>
-        <br>
-        <svg width="1050px" height="5000px"></svg>
-        <br>
+        <svg width="1050px" height="4000px"></svg>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div>
+      <p class="source">Data: Google Trend (3 Weeks Moving Avg.) | Methodology: Gartner | Note: Each line is comparable only to itself</p>
     </div>
 </body>
 
@@ -141,15 +155,12 @@ UCID: 12244891
       })
 
 
-
-
-
       function small_multiple(keyword, top_margin) {
 
         // MARGIN
 
         let width = 1000;
-        let height = 200; 
+        let height = 150; 
 
         let margin = {
           top: top_margin,
@@ -190,22 +201,60 @@ UCID: 12244891
           .range([margin.left, width - margin.right])
 
         let y = d3.scaleLinear()
-          .domain([0,100])
+          .domain(d3.extent(data.map(function (d) { return d.trend })))
           .range([height - margin.bottom, margin.top])
-
 
 
         // ADD TIMEFRAME
 
+        let timeframes = [
+          {
+            RangeStart: formatTime('2008-04-01'),
+            RangeEnd: formatTime('2012-05-01'),
+            Label: "Innovation",
+            Label2: "Trigger",
+            Color: "#f8f9fa"
+          },
+          {
+            RangeStart: formatTime('2012-05-01'),
+            RangeEnd: formatTime('2013-10-01'),
+            Label: "Inflated",
+            Label2: "Expectations",
+            Color: "#fde2e4"
+          },
+          {
+            RangeStart: formatTime('2013-10-01'),
+            RangeEnd: formatTime('2020-05-01'),
+            Label: "Trough of",
+            Label2: "Disillusionment",
+            Color: "#faf3dd"
+            
+          },
+          {
+            RangeStart: formatTime('2019-09-01'),
+            RangeEnd: formatTime('2020-10-01'),
+            Label: "Slope of",
+            Label2: "Enlightment",
+            Color: "#dbe7e4"
+          },
+          {
+            RangeStart: formatTime('2020-10-01'),
+            RangeEnd: formatTime('2021-05-01'),
+            Label: "Plateau of",
+            Label2: "Productivity",
+            Color: "#bcd4e6"
+          },
+        ];
+        
         // BITCOIN TIMEFRAME
 
-        let timeframes = [
+        let timeframes2 = [
           {
             RangeStart: formatTime('2008-04-01'),
             RangeEnd: formatTime('2017-05-01'),
             Label: "Innovation",
             Label2: "Trigger",
-            Color: "#fff1e6"
+            Color: "#f8f9fa"
           },
           {
             RangeStart: formatTime('2017-05-01'),
@@ -219,33 +268,34 @@ UCID: 12244891
             RangeEnd: formatTime('2020-05-01'),
             Label: "Trough of",
             Label2: "Disillusionment",
-            Color: "#dbe7e4"
+            Color: "#faf3dd"
+            
           },
           {
             RangeStart: formatTime('2020-04-01'),
             RangeEnd: formatTime('2021-05-01'),
             Label: "Slope of",
             Label2: "Enlightment",
-            Color: "#bcd4e6"
+            Color: "#dbe7e4"
           },
           {
             RangeStart: formatTime('2021-05-01'),
-            RangeEnd: formatTime('2021-12-01'),
+            RangeEnd: formatTime('2021-05-01'),
             Label: "Plateau of",
             Label2: "Productivity",
-            Color: "#c9ada7"
+            Color: "#bcd4e6"
           },
         ];
 
         // 5G TIMEFRAME 
 
-        let timeframes2 = [
+        let timeframes3 = [
           {
             RangeStart: formatTime('2008-04-01'),
             RangeEnd: formatTime('2020-01-01'),
             Label: "Innovation",
             Label2: "Trigger",
-            Color: "#fff1e6"
+            Color: "#f8f9fa"
           },
           {
             RangeStart: formatTime('2020-01-01'),
@@ -256,21 +306,21 @@ UCID: 12244891
           },
           {
             RangeStart: formatTime('2020-08-01'),
-            RangeEnd: formatTime('2021-01-01'),
+            RangeEnd: formatTime('2021-05-01'),
             Label: "Trough of",
             Label2: "Disillusionment",
-            Color: "#dbe7e4"
+            Color: "#faf3dd"
           },
           {
             RangeStart: formatTime('2021-01-01'),
-            RangeEnd: formatTime('2021-12-01'),
+            RangeEnd: formatTime('2021-05-01'),
             Label: "Slope of",
             Label2: "Enlightment",
-            Color: "#bcd4e6"
+            Color: "none"
           },
           {
             RangeStart: formatTime('2021-05-01'),
-            RangeEnd: formatTime('2021-12-01'),
+            RangeEnd: formatTime('2021-05-01'),
             Label: "Plateau of",
             Label2: "Productivity",
             Color: "none"
@@ -299,6 +349,14 @@ UCID: 12244891
           .attr("class", "timeframe2")
           .classed('rect', true);
 
+        let gTimeframes3 = svg
+          .selectAll(".timeframe3")
+          .data(timeframes3)
+          .enter()
+          .append("g")
+          .attr("class", "timeframe3")
+          .classed('rect', true);
+
         gTimeframes.append("rect")
             .attr("x", function(d) { return x(d.RangeStart); })
             .attr("y", 0)
@@ -309,6 +367,13 @@ UCID: 12244891
         gTimeframes2.append("rect")
             .attr("x", function(d) { return x(d.RangeStart); })
             .attr("y", height )
+            .attr("width", function(d) { return x(d.RangeEnd) - x(d.RangeStart); })
+            .attr("height", height-margin.bottom)
+            .style("fill", function(d) { return d.Color; });
+
+        gTimeframes3.append("rect")
+            .attr("x", function(d) { return x(d.RangeStart); })
+            .attr("y", 2*height )
             .attr("width", function(d) { return x(d.RangeEnd) - x(d.RangeStart); })
             .attr("height", height-margin.bottom)
             .style("fill", function(d) { return d.Color; });
@@ -330,9 +395,10 @@ UCID: 12244891
 
         let yAxisSettings = d3.axisLeft(y) 
             .ticks(2) 
-            .tickSize(-width) //size of tick lines
+            .tickSize(-width+2*(margin.left)) //size of tick lines
             .tickFormat(d3.format(".0f")) //what format do you want https://github.com/d3/d3-format 
             .tickPadding(5) //distance from tick labels to tick marks
+            
 
         // BACKGROUND
 
@@ -345,46 +411,106 @@ UCID: 12244891
 
         // BASELINE
 
-        let baseline = svg.append("line")
-            .attr("x1", margin.left)
-            .attr("x2", width + margin.left)
-            .attr("y1", y(0))
-            .attr("y2", y(0))
-            .style("stroke", "black")
-            .style("stroke-width", "0.2px")
+        // let baseline = svg.append("line")
+        //     .attr("x1", margin.left)
+        //     .attr("x2", width + margin.left)
+        //     .attr("y1", y(0))
+        //     .attr("y2", y(0))
+        //     .style("stroke", "black")
+        //     .style("stroke-width", "0.2px")
 
         // AXIS TICKS
 
         let xAxisTicks = svg.append("g")
-            .attr("class", "x axis") //give each axis a class
+            .attr("class", "x_axis") //give each axis a class
             .call(xAxisSettings)
             .attr("transform", `translate(0,${height-margin.bottom})`)
 
+
         let yAxisTicks = svg.append("g")
-            .attr("class", "y axis")
+            .attr("class", "y_axis")
             .call(yAxisSettings)
             .attr("transform", `translate(${margin.left},0)`)
             .style("stroke-width", "0.2px")
+            .style("stroke", "none")
+            .style("fill", "none")
+            .style("stroke-dasharray", "3 3")
 
+        svg
+            .append("text")
+            .attr("text-anchor", "end")
+            .attr("transform", "rotate(0)")
+            .attr("y", -margin.left+34)
+            .attr("x", -margin.top-13)
+            .text("More")
 
+        svg
+          .append("text")
+          .attr("text-anchor", "end")
+          .attr("transform", "rotate(0)")
+          .attr("y", -margin.left+44)
+          .attr("x", -margin.top-8)
+          .text("Popular")
 
+        svg
+            .append("text")
+            .attr("text-anchor", "end")
+            .attr("transform", "rotate(0)")
+            .attr("y", height-60)
+            .attr("x", -margin.top-16)
+            .text("Less")
 
+        svg
+            .append("text")
+            .attr("text-anchor", "end")
+            .attr("transform", "rotate(0)")
+            .attr("y", height-50)
+            .attr("x", -margin.top-7)
+            .text("Popular")
+
+        svg
+            .append("text")
+            .attr("text-anchor", "middle")
+            .attr("transform", "rotate(0)")
+            .attr("y", (height/2)-17)
+            .attr("x", -24)
+            .text("Google Trend")
+            .attr("font-weight", 600)
+            .style("font-size", "12px")
+
+        svg
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", -12 - margin.left)
+            .attr("x",38 - (height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text(">>");  
+            
+        svg
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", -12 - margin.left)
+            .attr("x", - (height / 2) + 4)
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("<<");  
 
 
         // LINE FUNCTION
 
-        let line = d3.line() //define a line function
+        let line = d3.line() 
             .defined(d => !isNaN(d.month))
-            .x(function (d) { return x(d.month) }) //accessing date 
-            .y(function (d) { return y(d.trend) }) //accesssing value 
+            .x(function (d) { return x(d.month) }) 
+            .y(function (d) { return y(d.trend) }) 
 
 
         let line_path = svg.append("path") //Add a grouping element. It's useful to organize svg elements. https://developer.mozilla.org/en-US/docs/Web/SVG/Element/g
-            .attr("class", "line") // Give circles a class name.
+            .attr("class", "line") 
             .attr("d", line(data))
             .style("fill", "none")
             .style("stroke", "black")
-            .style("stroke-width", 1.8)
+            .style("stroke-width", 1.6)
 
         // INTERACTIVE
 
@@ -392,13 +518,56 @@ UCID: 12244891
 
         // TOOLTIP: Circle
 
+
+
+        // let grouped_tech = d3.group(data, d => d.tech);
+
+        // console.log(grouped_tech)
+
+        // let techno = Array.from(grouped_tech.keys())
+
         let focus = svg
           .append('g')
           .append('circle')
-            .style('fill', 'red')
-            .attr('stroke', 'black')
-            .attr('r', '4')
-            .style('opacity', 0)
+          .style('fill', 'red')
+          .attr('stroke', 'black')
+          .attr('r', '4')
+          .style('opacity', 0)
+         
+
+        // let focus = svg
+        //   .data(grouped_tech)
+        //   .enter()
+        //   .append('g')
+        //   .attr("class", "mouse-per-line")
+
+        // focus
+        //   .append('circle')
+        //     .style("fill", "none")
+        //     .style("stroke", "black")
+        //     .attr('r', '4')
+        //     .style('opacity', 0)
+        //     .style("stroke-width", "2px")
+
+
+        // let res_nested = d3.nest()
+        //     .key(d=>d.vehicle_class)
+        //     .entries(resNew)
+
+        // let mousePerLine = mouseG.selectAll('.mouse-per-line')
+        //     .data(res_nested)
+        //     .enter()
+        //     .append("g")
+        //     .attr("class", "mouse-per-line");
+
+        // mousePerLine.append("circle")
+        //   .attr("r", 4)
+        //   .style("stroke", function (d) {
+        //     return color(d.key)
+        //   })
+        //   .style("fill", "none")
+        //   .style("stroke-width", lineStroke)
+        //   .style("opacity", "0");
 
         // TOOLTIP: Label
 
@@ -419,46 +588,58 @@ UCID: 12244891
           .append("line")
             .attr("stroke", "none")
             .attr("x1", 0).attr("x2", 0)
-            .attr("y1", 0).attr("y2", (2*height+70))
+            .attr("y1", 0).attr("y2", (3*height))
 
         svg
           .append('rect')
           .style('fill', 'none')
           .style('pointer-events', 'all')
           .attr('width', width)
-          .attr('height', height)
+          .attr('height', 3*height)
           .on('mouseover', mouseover)
           .on('mousemove', mousemove)
           .on('mouseout', mouseout)
 
-        svg
-          .append("g")
-          .selectAll("dot")
-          .data(data)
-          .enter()
-          .append("circle")
-            .attr("class", "myCircle")
-            .attr("cx", function(d) { return x(d.month) } )
-            .attr("cy", function(d) { return y(d.bitcoin) } )
-            .attr("r", 2)
-            .attr("stroke", "grey")
-            .attr("stroke-width", 1)
-            .attr("fill", "white")
-            .on("mouseover", mouseover)
-            .on("mousemove", mousemove)
-            .on("mouseleave", mouseout)
+        // SMALL TITLE
+
+        // let symbols = d3.group()
+        //   .key(function(d) { return d.tech; })
+        //   .entries(data);
+
+        // let small_title = svg.append("text")
+        //   .attr("x", width - 6)
+        //   .attr("y", height - 6)
+        //   .style("text-anchor", "end")
+        //   .text(function(data) { return data.tech; });
+
+        // svg
+        //   .append("g")
+        //   .selectAll("dot")
+        //   .data(data)
+        //   .enter()
+        //   .append("circle")
+        //     .attr("class", "myCircle")
+        //     .attr("cx", function(d) { return x(d.month) } )
+        //     .attr("cy", function(d) { return y(d.bitcoin) } )
+        //     .attr("r", 2)
+        //     .attr("stroke", "grey")
+        //     .attr("stroke-width", 1)
+        //     .attr("fill", "white")
+        //     .on("mouseover", mouseover)
+        //     .on("mousemove", mousemove)
+        //     .on("mouseleave", mouseout)
 
         // EVENT ANNOTATIONS
 
-        let tip = svg
-          .append("div")
-          .style("opacity", 0)
-          .attr("class", "tooltip")
-          .style("background-color", "white")
-          .style("border", "solid")
-          .style("border-width", "2px")
-          .style("border-radius", "5px")
-          .style("padding", "5px")
+        // let tip = svg
+        //   .append("div")
+        //   .style("opacity", 0)
+        //   .attr("class", "tooltip")
+        //   .style("background-color", "white")
+        //   .style("border", "solid")
+        //   .style("border-width", "2px")
+        //   .style("border-radius", "5px")
+        //   .style("padding", "5px")
 
         
         // MOUSEOVER
@@ -468,7 +649,9 @@ UCID: 12244891
           focusText.style('opacity', 1)
           hoverLine.style('opacity', 1)
           hoverLineGroup.style('opacity', 1)
-          tip.style("opacity", 1)
+          // tip.style("opacity", 1)
+          // d3.selectAll(".mouse-per-line circle")
+          //       .style("opacity", "0");
         }
 
         let formatDay = d3.timeFormat("%a %x")
@@ -488,30 +671,22 @@ UCID: 12244891
             .attr("stroke", "black")
             .attr("x1", x(selectedData.month))
             .attr("x2", x(selectedData.month))
-          tip
-            .html("exact: " + d.event)
-            .style("left", (d3.pointer(event)[0]+70) + "px")
-            .style("top", (d3.pointer(event)[1]) + "px")
+          // tip
+          //   .html("exact: " + d.event)
+          //   .style("left", (d3.pointer(event)[0]+70) + "px")
+          //   .style("top", (d3.pointer(event)[1]) + "px")
+          // d3.selectAll(".mouse-per-line circle")
+          //       .style("opacity", "1");
         }
 
         function mouseout() {
           focus.style('opacity', 0)
           focusText.style('opacity', 0)
           hoverLineGroup.style('opacity', 0)
-          tip.style("opacity", 0)
+          // tip.style("opacity", 0)
+          // d3.selectAll(".mouse-per-line circle")
+          //       .style("opacity", "0");
         }
-
-
-
-          
-      
-            // let baseline = svg.append("line")
-            // .attr("x1", margin.left)
-            // .attr("x2", width + margin.left)
-            // .attr("y1", y(0))
-            // .attr("y2", y(0))
-            // .style("stroke", "black")
-            // .style("stroke-width", "1px")
 
             // svg.append("text")             
             // .attr("transform",
@@ -551,8 +726,11 @@ UCID: 12244891
 
       }
 
-      small_multiple("bitcoin", 0)
-      small_multiple("x5g", 200)
+      small_multiple("x3d_printer", 0)
+      small_multiple("bitcoin", 150)
+      small_multiple("x5g", 300)
+      
+      // small_multiple("cloud_computing", 400)
 
     })
 
