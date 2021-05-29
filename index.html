@@ -11,33 +11,32 @@ UCID: 12244891
 <head>
     <meta charset="utf-8">
     <link href='https://fonts.googleapis.com/css?family=Lato:300,900' rel='stylesheet' type='text/css'>
-    <!-- set styles on the top -->
+
     <style>
         .chart-container {
             max-width: 1050px;
-            /* border: 2px solid red; */
             margin: 0 auto;
-            /* auto centers the div */
             font-family: 'Lato';
             display: grid;
             grid-template-columns: auto;
             grid-template-rows: 200px 200px;
             grid-template-areas: 
-              "headline headline"
-              "bitcoin cryptocurrency";
+              "headline headline" 
+              "bitcoin cryptocurrency"; 
         }
 
         svg {
-            /* border: 2px solid purple; */
             overflow: visible;
         }
+        
+
         body {
             font: 10px sans-serif;
         }
 
-        .headline {
+        /* .headline {
           grid-area: headline;
-        }
+        } */
     
         .axis path,
         .axis line {
@@ -51,33 +50,30 @@ UCID: 12244891
         .y_axis text{
           fill: none;
         }  
-        
-        :root {
-          --accent-color: #E8336D;
-        }
-
-
 
         h1 {
           font-family: 'Lato';
           font-weight: normal;
           font-size: 35px;
-          text-align: center;
+          text-align: left;
+          margin-left: 495px;
         }
 
         h2 {
           font-family: 'Lato';
           font-weight: normal;
           font-size: 20px;
-          text-align: center;
+          text-align: left;
           font-style: italic;
+          margin-left: 497px;
         }
 
         h3 {
           font-family: 'Lato';
           font-weight: bold;
           font-size: 12px;
-          text-align: center;
+          text-align: left;
+          margin-left: 500px;
         }
 
         .source_title {
@@ -116,9 +112,13 @@ UCID: 12244891
     <br>
     <br>
     <br>
+    <div>
+ 
+    </div>
     <br>
+    
     <div class="chart-container">
-        <svg width="1050px" height="4000px"></svg>
+      <svg width="1050px" height="4000px" id="svg"></svg>
     </div>
     <br>
     <br>
@@ -128,11 +128,10 @@ UCID: 12244891
     <div>
       <p class="source">Data: Google Trend (3 Weeks Moving Avg.) | Methodology: Gartner | Note: Each line is comparable only to itself</p>
     </div>
+
 </body>
 
 <script src="https://d3js.org/d3.v6.min.js"></script>
-
-<!-- we're using d3 version 6 (the latest version) for all out work -->
 
 <script>
 
@@ -154,7 +153,6 @@ UCID: 12244891
           d.month = formatTime(d.month)
       })
 
-
       function small_multiple(keyword, top_margin) {
 
         // MARGIN
@@ -172,15 +170,11 @@ UCID: 12244891
 
         let data = raw.filter(d => d.tech == keyword)
 
-        console.log(data)
-
         let bisectDate = d3.bisector(function(d) { return d.month; }).left;
 
         // COLOR GROUPING
 
         let color = d3.scaleOrdinal(d3.schemeCategory10);
-
-        color.domain(["bitcoin", "cryptocurrency", "x5g", "x3d_printer"])
 
         let technologies = color.domain().map(function(name) {
           return {
@@ -201,7 +195,8 @@ UCID: 12244891
           .range([margin.left, width - margin.right])
 
         let y = d3.scaleLinear()
-          .domain(d3.extent(data.map(function (d) { return d.trend })))
+          .domain([0,100])
+          // .domain(d3.extent(data.map(function (d) { return d.trend })))
           .range([height - margin.bottom, margin.top])
 
 
@@ -327,11 +322,6 @@ UCID: 12244891
           },
         ];
 
-  //       var g = svg.selectAll(".rect")
-  // .data([10,60,120])
-  // .enter()
-  // .append("g")
-  // .classed('rect', true)
 
         let gTimeframes = svg
             .selectAll(".rect")
@@ -472,7 +462,7 @@ UCID: 12244891
             .append("text")
             .attr("text-anchor", "middle")
             .attr("transform", "rotate(0)")
-            .attr("y", (height/2)-17)
+            .attr("y", (height/2)-18)
             .attr("x", -24)
             .text("Google Trend")
             .attr("font-weight", 600)
@@ -504,6 +494,11 @@ UCID: 12244891
             .x(function (d) { return x(d.month) }) 
             .y(function (d) { return y(d.trend) }) 
 
+        // let line2 = d3.line() 
+        //     .defined(d => !isNaN(d.month))
+        //     .x(function (d) { return x(d.month) }) 
+        //     .y(function (d) { return y(d.trend) }) 
+
 
         let line_path = svg.append("path") //Add a grouping element. It's useful to organize svg elements. https://developer.mozilla.org/en-US/docs/Web/SVG/Element/g
             .attr("class", "line") 
@@ -511,6 +506,20 @@ UCID: 12244891
             .style("fill", "none")
             .style("stroke", "black")
             .style("stroke-width", 1.6)
+
+        // let line_path2 = svg.append("path") //Add a grouping element. It's useful to organize svg elements. https://developer.mozilla.org/en-US/docs/Web/SVG/Element/g
+        //     .attr("class", "line2") 
+        //     .attr("d", line(data))
+        //     .style("fill", "none")
+        //     .style("stroke", "black")
+        //     .style("stroke-width", 1.6)
+
+        // let svg2 = d3.select("#svg2")
+        //     .attr("class", "line2") 
+        //     .attr("d", line(data))
+        //     .style("fill", "none")
+        //     .style("stroke", "red")
+        //     .style("stroke-width", 1.6)
 
         // INTERACTIVE
 
@@ -729,10 +738,172 @@ UCID: 12244891
       small_multiple("x3d_printer", 0)
       small_multiple("bitcoin", 150)
       small_multiple("x5g", 300)
-      
-      // small_multiple("cloud_computing", 400)
+
+    
 
     })
+
+    let svg2 = d3.select("body")
+        .select("svg")
+
+      d3.csv("gartnerx.csv").then(function (raw) {
+
+      raw.forEach(function (d) {
+          d.trend = +d.trend
+          d.month = formatTime(d.month)
+      })
+
+      function small_multiple(keyword, top_margin) {
+
+        // MARGIN
+
+        let width = 300;
+        let height = 150; 
+
+        let margin = {
+          top: -200,
+          right: 0,
+          bottom: 220,
+          left: 20
+        }
+
+
+        let data = raw.filter(d => d.tech == keyword)
+
+        let bisectDate = d3.bisector(function(d) { return d.month; }).left;
+
+        // AXIS
+
+        let x = d3.scaleTime()
+          .domain(d3.extent(data.map(function (d) { return d.month })))
+          .range([margin.left, width - margin.right])
+
+        let y = d3.scaleLinear()
+          .domain([0,20])
+          // .domain(d3.extent(data.map(function (d) { return d.trend })))
+          .range([height - margin.bottom, margin.top])
+
+        let xAxisSettings = d3.axisBottom(x)
+            .ticks(0)
+            .tickSize(0)
+            .tickPadding(5)
+            .tickFormat(d3.timeFormat("%Y"))
+
+        let yAxisSettings = d3.axisLeft(y) 
+            .ticks(2) 
+            .tickSize(-width+2*(margin.left)) //size of tick lines
+            .tickFormat(d3.format(".0f")) //what format do you want https://github.com/d3/d3-format 
+            .tickPadding(5) //distance from tick labels to tick marks
+
+
+        // ADD TIMEFRAME
+
+        let timeframes4 = [
+          {
+            RangeStart: formatTime('2008-04-01'),
+            RangeEnd: formatTime('2008-07-01'),
+            Label: "Innovation",
+            Label2: "Trigger",
+            Color: "#f8f9fa"
+          },
+          {
+            RangeStart: formatTime('2008-07-01'),
+            RangeEnd: formatTime('2008-10-01'),
+            Label: "Inflated",
+            Label2: "Expectations",
+            Color: "#fde2e4"
+          },
+          {
+            RangeStart: formatTime('2008-10-01'),
+            RangeEnd: formatTime('2009-01-01'),
+            Label: "Trough of",
+            Label2: "Disillusionment",
+            Color: "#faf3dd"
+            
+          },
+          {
+            RangeStart: formatTime('2009-01-01'),
+            RangeEnd: formatTime('2009-04-01'),
+            Label: "Slope of",
+            Label2: "Enlightment",
+            Color: "#dbe7e4"
+          },
+          {
+            RangeStart: formatTime('2009-04-01'),
+            RangeEnd: formatTime('2009-07-01'),
+            Label: "Plateau of",
+            Label2: "Productivity",
+            Color: "#bcd4e6"
+          },
+        ];
+        
+        let gTimeframes4 = svg
+          .selectAll(".timeframe4")
+          .data(timeframes4)
+          .enter()
+          .append("g")
+          .attr("class", "timeframe4")
+          .classed('rect', true);
+
+        gTimeframes4.append("rect")
+          .attr("x", function(d) { return x(d.RangeStart); })
+          .attr("y", -200 )
+          .attr("width", function(d) { return x(d.RangeEnd) - x(d.RangeStart); })
+          .attr("height", 130)
+          .style("fill", function(d) { return d.Color; });
+
+
+            
+
+        // BACKGROUND
+
+        let bg = svg2.append("rect")
+            .attr("x", margin.left)
+            .attr("y", 0)
+            .attr("width", width)
+            .attr("height", height)
+            .style("fill", "none")
+
+        // AXIS TICKS
+
+        let xAxisTicks = svg2.append("g")
+            .attr("class", "x_axis") //give each axis a class
+            .call(xAxisSettings)
+            .attr("transform", `translate(0,${height-margin.bottom})`)
+
+
+        let yAxisTicks = svg2.append("g")
+            .attr("class", "y_axis")
+            .call(yAxisSettings)
+            .attr("transform", `translate(${margin.left},0)`)
+            .style("stroke-width", "0.2px")
+            .style("stroke", "none")
+            .style("fill", "none")
+            .style("stroke-dasharray", "3 3")
+
+        // LINE FUNCTION
+
+        let line2 = d3.line() 
+            .defined(d => !isNaN(d.month))
+            .x(function (d) { return x(d.month) }) 
+            .y(function (d) { return y(d.trend) })
+            .curve(d3.curveNatural) 
+
+        let line_path = svg2.append("path") //Add a grouping element. It's useful to organize svg elements. https://developer.mozilla.org/en-US/docs/Web/SVG/Element/g
+            .attr("class", "line") 
+            .attr("d", line2(data))
+            .style("fill", "none")
+            .style("stroke", "black")
+            .style("stroke-width", 1.6)
+
+
+      }
+
+      small_multiple("gartner", 0)
+
+
+
+})
 
 </script>
 
