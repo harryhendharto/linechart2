@@ -34,17 +34,13 @@ UCID: 12244891
             font: 10px sans-serif;
         }
 
-        /* .headline {
-          grid-area: headline;
-        } */
-    
         .axis path,
         .axis line {
           shape-rendering: crispEdges;
         }
 
         .x_axis text{
-          fill: grey;
+          fill: lightgray;
         }  
 
         .y_axis text{
@@ -57,6 +53,7 @@ UCID: 12244891
           font-size: 35px;
           text-align: left;
           margin-left: 495px;
+          color: white;
         }
 
         h2 {
@@ -74,6 +71,15 @@ UCID: 12244891
           font-size: 12px;
           text-align: left;
           margin-left: 500px;
+          color: white;
+        }
+
+        h4 {
+          font-family: 'Lato';
+          font-weight: bold;
+          font-size: 16px;
+          text-align: left;
+          margin-left: 150px;
         }
 
         .source_title {
@@ -99,19 +105,14 @@ UCID: 12244891
 
 <body>
     <br>
-    <h1>
-      TECHNOLOGY HYPE CYCLE
-    </h1>
-    <h2>
-      What is a technology lifecycle look like?
-    </h2>
+    <h1>.</h1>
     <br>
-    <h3>
-      BY HARRY SATRIYO HENDHARTO
-    </h3>
+    <h3>.</h3>
     <br>
     <br>
-    <br>
+    <h4>
+      How well does it fit real data?
+    </h4>
     <div>
  
     </div>
@@ -120,11 +121,7 @@ UCID: 12244891
     <div class="chart-container">
       <svg width="1050px" height="4000px" id="svg"></svg>
     </div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+
     <div>
       <p class="source">Data: Google Trend (3 Weeks Moving Avg.) | Methodology: Gartner | Note: Each line is comparable only to itself</p>
     </div>
@@ -158,7 +155,7 @@ UCID: 12244891
         // MARGIN
 
         let width = 1000;
-        let height = 150; 
+        let height = 130; 
 
         let margin = {
           top: top_margin,
@@ -260,14 +257,14 @@ UCID: 12244891
           },
           {
             RangeStart: formatTime('2018-04-01'),
-            RangeEnd: formatTime('2020-05-01'),
+            RangeEnd: formatTime('2020-09-01'),
             Label: "Trough of",
             Label2: "Disillusionment",
             Color: "#faf3dd"
             
           },
           {
-            RangeStart: formatTime('2020-04-01'),
+            RangeStart: formatTime('2020-09-01'),
             RangeEnd: formatTime('2021-05-01'),
             Label: "Slope of",
             Label2: "Enlightment",
@@ -379,7 +376,7 @@ UCID: 12244891
 
         let xAxisSettings = d3.axisBottom(x)
             .ticks(5)
-            .tickSize(0)
+            .tickSize(3)
             .tickPadding(5)
             .tickFormat(d3.timeFormat("%Y"))
 
@@ -430,7 +427,7 @@ UCID: 12244891
             .append("text")
             .attr("text-anchor", "end")
             .attr("transform", "rotate(0)")
-            .attr("y", -margin.left+34)
+            .attr("y", -margin.left+28)
             .attr("x", -margin.top-13)
             .text("More")
 
@@ -438,7 +435,7 @@ UCID: 12244891
           .append("text")
           .attr("text-anchor", "end")
           .attr("transform", "rotate(0)")
-          .attr("y", -margin.left+44)
+          .attr("y", -margin.left+39)
           .attr("x", -margin.top-8)
           .text("Popular")
 
@@ -446,7 +443,7 @@ UCID: 12244891
             .append("text")
             .attr("text-anchor", "end")
             .attr("transform", "rotate(0)")
-            .attr("y", height-60)
+            .attr("y", height-48)
             .attr("x", -margin.top-16)
             .text("Less")
 
@@ -454,7 +451,7 @@ UCID: 12244891
             .append("text")
             .attr("text-anchor", "end")
             .attr("transform", "rotate(0)")
-            .attr("y", height-50)
+            .attr("y", height-36)
             .attr("x", -margin.top-7)
             .text("Popular")
 
@@ -462,7 +459,7 @@ UCID: 12244891
             .append("text")
             .attr("text-anchor", "middle")
             .attr("transform", "rotate(0)")
-            .attr("y", (height/2)-18)
+            .attr("y", (height/2)-12)
             .attr("x", -24)
             .text("Google Trend")
             .attr("font-weight", 600)
@@ -470,9 +467,42 @@ UCID: 12244891
 
         svg
             .append("text")
+            .attr("text-anchor", "middle")
+            .attr("transform", "rotate(0)")
+            .attr("y", (height/2)+25)
+            .attr("x", 124)
+            .text("'3D Printing'")
+            .attr("font-weight", 300)
+            .style("font-size", "15px")
+            .style("font-style", "italic")
+
+        svg
+            .append("text")
+            .attr("text-anchor", "middle")
+            .attr("transform", "rotate(0)")
+            .attr("y", (height/2)+160)
+            .attr("x", 111)
+            .text("'Bitcoin'")
+            .attr("font-weight", 300)
+            .style("font-size", "15px")
+            .style("font-style", "italic")
+
+        svg
+            .append("text")
+            .attr("text-anchor", "middle")
+            .attr("transform", "rotate(0)")
+            .attr("y", (height/2)+289)
+            .attr("x", 99)
+            .text("'5G'")
+            .attr("font-weight", 300)
+            .style("font-size", "15px")
+            .style("font-style", "italic")
+
+        svg
+            .append("text")
             .attr("transform", "rotate(-90)")
             .attr("y", -12 - margin.left)
-            .attr("x",38 - (height / 2))
+            .attr("x",34 - (height / 2) - 2)
             .attr("dy", "1em")
             .style("text-anchor", "middle")
             .text(">>");  
@@ -481,7 +511,7 @@ UCID: 12244891
             .append("text")
             .attr("transform", "rotate(-90)")
             .attr("y", -12 - margin.left)
-            .attr("x", - (height / 2) + 4)
+            .attr("x", - (height / 2))
             .attr("dy", "1em")
             .style("text-anchor", "middle")
             .text("<<");  
@@ -494,11 +524,6 @@ UCID: 12244891
             .x(function (d) { return x(d.month) }) 
             .y(function (d) { return y(d.trend) }) 
 
-        // let line2 = d3.line() 
-        //     .defined(d => !isNaN(d.month))
-        //     .x(function (d) { return x(d.month) }) 
-        //     .y(function (d) { return y(d.trend) }) 
-
 
         let line_path = svg.append("path") //Add a grouping element. It's useful to organize svg elements. https://developer.mozilla.org/en-US/docs/Web/SVG/Element/g
             .attr("class", "line") 
@@ -506,20 +531,6 @@ UCID: 12244891
             .style("fill", "none")
             .style("stroke", "black")
             .style("stroke-width", 1.6)
-
-        // let line_path2 = svg.append("path") //Add a grouping element. It's useful to organize svg elements. https://developer.mozilla.org/en-US/docs/Web/SVG/Element/g
-        //     .attr("class", "line2") 
-        //     .attr("d", line(data))
-        //     .style("fill", "none")
-        //     .style("stroke", "black")
-        //     .style("stroke-width", 1.6)
-
-        // let svg2 = d3.select("#svg2")
-        //     .attr("class", "line2") 
-        //     .attr("d", line(data))
-        //     .style("fill", "none")
-        //     .style("stroke", "red")
-        //     .style("stroke-width", 1.6)
 
         // INTERACTIVE
 
@@ -597,7 +608,7 @@ UCID: 12244891
           .append("line")
             .attr("stroke", "none")
             .attr("x1", 0).attr("x2", 0)
-            .attr("y1", 0).attr("y2", (3*height))
+            .attr("y1", 0).attr("y2", (3*height)-30)
 
         svg
           .append('rect')
@@ -673,7 +684,7 @@ UCID: 12244891
             .attr('cx', x(selectedData.month))
             .attr('cy', y(selectedData.trend))
           focusText
-            .html(formatDay(selectedData.month) + "  -  " + selectedData.bitcoin)
+            .html(formatDay(selectedData.month))
             .attr('x', x(selectedData.month)+15)
             .attr('y', y(80))
           hoverLine
@@ -736,8 +747,8 @@ UCID: 12244891
       }
 
       small_multiple("x3d_printer", 0)
-      small_multiple("bitcoin", 150)
-      small_multiple("x5g", 300)
+      small_multiple("bitcoin", 130)
+      small_multiple("x5g", 260)
 
     
 
@@ -746,7 +757,7 @@ UCID: 12244891
     let svg2 = d3.select("body")
         .select("svg")
 
-      d3.csv("gartnerx.csv").then(function (raw) {
+      d3.csv("gartnerxxx_copy.csv").then(function (raw) {
 
       raw.forEach(function (d) {
           d.trend = +d.trend
@@ -757,8 +768,8 @@ UCID: 12244891
 
         // MARGIN
 
-        let width = 300;
-        let height = 150; 
+        let width =250;
+        let height = 130; 
 
         let margin = {
           top: -200,
@@ -801,38 +812,38 @@ UCID: 12244891
         let timeframes4 = [
           {
             RangeStart: formatTime('2008-04-01'),
-            RangeEnd: formatTime('2008-07-01'),
-            Label: "Innovation",
-            Label2: "Trigger",
+            RangeEnd: formatTime('2008-11-01'),
+            Label: "",
+            Label2: "Gartner's Hype Cycle",
             Color: "#f8f9fa"
           },
           {
-            RangeStart: formatTime('2008-07-01'),
-            RangeEnd: formatTime('2008-10-01'),
-            Label: "Inflated",
-            Label2: "Expectations",
+            RangeStart: formatTime('2008-11-01'),
+            RangeEnd: formatTime('2009-02-01'),
+            Label: "",
+            Label2: "",
             Color: "#fde2e4"
           },
           {
-            RangeStart: formatTime('2008-10-01'),
-            RangeEnd: formatTime('2009-01-01'),
-            Label: "Trough of",
-            Label2: "Disillusionment",
+            RangeStart: formatTime('2009-02-01'),
+            RangeEnd: formatTime('2009-09-01'),
+            Label: "",
+            Label2: "",
             Color: "#faf3dd"
             
           },
           {
-            RangeStart: formatTime('2009-01-01'),
-            RangeEnd: formatTime('2009-04-01'),
-            Label: "Slope of",
-            Label2: "Enlightment",
+            RangeStart: formatTime('2009-06-01'),
+            RangeEnd: formatTime('2009-09-01'),
+            Label: "",
+            Label2: "",
             Color: "#dbe7e4"
           },
           {
-            RangeStart: formatTime('2009-04-01'),
-            RangeEnd: formatTime('2009-07-01'),
-            Label: "Plateau of",
-            Label2: "Productivity",
+            RangeStart: formatTime('2009-09-01'),
+            RangeEnd: formatTime('2010-01-01'),
+            Label: "",
+            Label2: "",
             Color: "#bcd4e6"
           },
         ];
@@ -849,10 +860,19 @@ UCID: 12244891
           .attr("x", function(d) { return x(d.RangeStart); })
           .attr("y", -200 )
           .attr("width", function(d) { return x(d.RangeEnd) - x(d.RangeStart); })
-          .attr("height", 130)
+          .attr("height", 110)
           .style("fill", function(d) { return d.Color; });
 
-
+        gTimeframes4.append("text")
+          .attr("x", function(d) { return x(d.RangeStart) + 2; })
+          .attr("y", -height-100)
+          .text(d => d.Label)
+          .append("tspan")
+          .attr("x", function(d) { return x(d.RangeStart) + 2; })
+          .attr("y", -height-80)
+          .text(d => d.Label2)
+          .style("font-weight", "bold")
+          .style("font-size", "16px")
             
 
         // BACKGROUND
@@ -887,14 +907,104 @@ UCID: 12244891
             .defined(d => !isNaN(d.month))
             .x(function (d) { return x(d.month) }) 
             .y(function (d) { return y(d.trend) })
-            .curve(d3.curveNatural) 
+            .curve(d3.curveNatural) // Hypothetical Curve Smoothing
 
-        let line_path = svg2.append("path") //Add a grouping element. It's useful to organize svg elements. https://developer.mozilla.org/en-US/docs/Web/SVG/Element/g
+        let line_path = svg2.append("path") 
             .attr("class", "line") 
             .attr("d", line2(data))
             .style("fill", "none")
             .style("stroke", "black")
             .style("stroke-width", 1.6)
+
+        svg2
+            .append("text")
+            .attr("text-anchor", "middle")
+            .attr("transform", "rotate(0)")
+            .attr("y", (height/2)-205)
+            .attr("x", -27)
+            .text("Expectation")
+            .attr("font-weight", 600)
+            .style("font-size", "12px")
+
+        svg2
+            .append("text")
+            .attr("text-anchor", "middle")
+            .attr("transform", "rotate(0)")
+            .attr("y", (height/2)-220)
+            .attr("x", 420)
+            .text("FIVE KEY PHASES")
+            .attr("font-weight", 400)
+            .style("font-size", "32px")
+
+        svg2
+            .append("text")
+            .attr("text-anchor", "middle")
+            .attr("transform", "rotate(0)")
+            .attr("y", (height/2)-185)
+            .attr("x", 540)
+            .text("OF A TECHNOLOGY'S LIFE CYCLE")
+            .attr("font-weight", 400)
+            .style("font-size", "32px")
+
+        svg2
+            .append("text")
+            .attr("text-anchor", "middle")
+            .attr("transform", "rotate(0)")
+            .attr("y", (height/2)-155)
+            .attr("x", 378)
+            .text("by Harry Satriyo Hendharto")
+            .attr("font-weight", 400)
+            .style("font-size", "14px")
+
+        svg2
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", (height/2)-100)
+            .attr("x", 158)
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text(">>");  
+            
+        svg2
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", (height/2)-100)
+            .attr("x", 127)
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("<<");  
+
+        svg2
+            .append("text")
+            .attr("text-anchor", "end")
+            .attr("transform", "rotate(0)")
+            .attr("y", height-310)
+            .attr("x", -margin.top-216)
+            .text("More")
+
+        svg2
+            .append("text")
+            .attr("text-anchor", "end")
+            .attr("transform", "rotate(0)")
+            .attr("y", height-300)
+            .attr("x", -margin.top-207)
+            .text("Promising")
+
+        svg2
+            .append("text")
+            .attr("text-anchor", "end")
+            .attr("transform", "rotate(0)")
+            .attr("y", height-240)
+            .attr("x", -margin.top-219)
+            .text("Less")
+
+        svg2
+            .append("text")
+            .attr("text-anchor", "end")
+            .attr("transform", "rotate(0)")
+            .attr("y", height-229)
+            .attr("x", -margin.top-207)
+            .text("Promising")
 
 
       }
