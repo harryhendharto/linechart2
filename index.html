@@ -396,16 +396,6 @@ UCID: 12244891
             .attr("height", height)
             .style("fill", "none")
 
-        // BASELINE
-
-        // let baseline = svg.append("line")
-        //     .attr("x1", margin.left)
-        //     .attr("x2", width + margin.left)
-        //     .attr("y1", y(0))
-        //     .attr("y2", y(0))
-        //     .style("stroke", "black")
-        //     .style("stroke-width", "0.2px")
-
         // AXIS TICKS
 
         let xAxisTicks = svg.append("g")
@@ -428,7 +418,7 @@ UCID: 12244891
             .attr("text-anchor", "end")
             .attr("transform", "rotate(0)")
             .attr("y", -margin.left+28)
-            .attr("x", -margin.top-13)
+            .attr("x", -13)
             .text("More")
 
         svg
@@ -436,7 +426,7 @@ UCID: 12244891
           .attr("text-anchor", "end")
           .attr("transform", "rotate(0)")
           .attr("y", -margin.left+39)
-          .attr("x", -margin.top-8)
+          .attr("x", -8)
           .text("Popular")
 
         svg
@@ -444,7 +434,7 @@ UCID: 12244891
             .attr("text-anchor", "end")
             .attr("transform", "rotate(0)")
             .attr("y", height-48)
-            .attr("x", -margin.top-16)
+            .attr("x", -16)
             .text("Less")
 
         svg
@@ -452,7 +442,7 @@ UCID: 12244891
             .attr("text-anchor", "end")
             .attr("transform", "rotate(0)")
             .attr("y", height-36)
-            .attr("x", -margin.top-7)
+            .attr("x", -7)
             .text("Popular")
 
         svg
@@ -535,59 +525,7 @@ UCID: 12244891
         // INTERACTIVE
 
         let bisect = d3.bisector(d => d.month).left
-
-        // TOOLTIP: Circle
-
-
-
-        // let grouped_tech = d3.group(data, d => d.tech);
-
-        // console.log(grouped_tech)
-
-        // let techno = Array.from(grouped_tech.keys())
-
-        let focus = svg
-          .append('g')
-          .append('circle')
-          .style('fill', 'red')
-          .attr('stroke', 'black')
-          .attr('r', '4')
-          .style('opacity', 0)
          
-
-        // let focus = svg
-        //   .data(grouped_tech)
-        //   .enter()
-        //   .append('g')
-        //   .attr("class", "mouse-per-line")
-
-        // focus
-        //   .append('circle')
-        //     .style("fill", "none")
-        //     .style("stroke", "black")
-        //     .attr('r', '4')
-        //     .style('opacity', 0)
-        //     .style("stroke-width", "2px")
-
-
-        // let res_nested = d3.nest()
-        //     .key(d=>d.vehicle_class)
-        //     .entries(resNew)
-
-        // let mousePerLine = mouseG.selectAll('.mouse-per-line')
-        //     .data(res_nested)
-        //     .enter()
-        //     .append("g")
-        //     .attr("class", "mouse-per-line");
-
-        // mousePerLine.append("circle")
-        //   .attr("r", 4)
-        //   .style("stroke", function (d) {
-        //     return color(d.key)
-        //   })
-        //   .style("fill", "none")
-        //   .style("stroke-width", lineStroke)
-        //   .style("opacity", "0");
 
         // TOOLTIP: Label
 
@@ -619,48 +557,7 @@ UCID: 12244891
           .on('mouseover', mouseover)
           .on('mousemove', mousemove)
           .on('mouseout', mouseout)
-
-        // SMALL TITLE
-
-        // let symbols = d3.group()
-        //   .key(function(d) { return d.tech; })
-        //   .entries(data);
-
-        // let small_title = svg.append("text")
-        //   .attr("x", width - 6)
-        //   .attr("y", height - 6)
-        //   .style("text-anchor", "end")
-        //   .text(function(data) { return data.tech; });
-
-        // svg
-        //   .append("g")
-        //   .selectAll("dot")
-        //   .data(data)
-        //   .enter()
-        //   .append("circle")
-        //     .attr("class", "myCircle")
-        //     .attr("cx", function(d) { return x(d.month) } )
-        //     .attr("cy", function(d) { return y(d.bitcoin) } )
-        //     .attr("r", 2)
-        //     .attr("stroke", "grey")
-        //     .attr("stroke-width", 1)
-        //     .attr("fill", "white")
-        //     .on("mouseover", mouseover)
-        //     .on("mousemove", mousemove)
-        //     .on("mouseleave", mouseout)
-
-        // EVENT ANNOTATIONS
-
-        // let tip = svg
-        //   .append("div")
-        //   .style("opacity", 0)
-        //   .attr("class", "tooltip")
-        //   .style("background-color", "white")
-        //   .style("border", "solid")
-        //   .style("border-width", "2px")
-        //   .style("border-radius", "5px")
-        //   .style("padding", "5px")
-
+        
         
         // MOUSEOVER
 
@@ -669,6 +566,7 @@ UCID: 12244891
           focusText.style('opacity', 1)
           hoverLine.style('opacity', 1)
           hoverLineGroup.style('opacity', 1)
+          // tips.style('opacity', 1)
           // tip.style("opacity", 1)
           // d3.selectAll(".mouse-per-line circle")
           //       .style("opacity", "0");
@@ -680,9 +578,9 @@ UCID: 12244891
           let x0 = x.invert(d3.pointer(event)[0])
           let i = bisect(data, x0, 1)
           selectedData = data[i]
-          focus
-            .attr('cx', x(selectedData.month))
-            .attr('cy', y(selectedData.trend))
+          // focus
+          //   .attr('cx', x(selectedData.month))
+          //   .attr('cy', y(selectedData.trend))
           focusText
             .html(formatDay(selectedData.month))
             .attr('x', x(selectedData.month)+15)
@@ -691,59 +589,15 @@ UCID: 12244891
             .attr("stroke", "black")
             .attr("x1", x(selectedData.month))
             .attr("x2", x(selectedData.month))
-          // tip
-          //   .html("exact: " + d.event)
-          //   .style("left", (d3.pointer(event)[0]+70) + "px")
-          //   .style("top", (d3.pointer(event)[1]) + "px")
-          // d3.selectAll(".mouse-per-line circle")
-          //       .style("opacity", "1");
         }
 
         function mouseout() {
           focus.style('opacity', 0)
           focusText.style('opacity', 0)
           hoverLineGroup.style('opacity', 0)
-          // tip.style("opacity", 0)
-          // d3.selectAll(".mouse-per-line circle")
-          //       .style("opacity", "0");
         }
 
-            // svg.append("text")             
-            // .attr("transform",
-            //         "translate(" + (width/2) + " ," + 
-            //                     (height + margin.top + 20) + ")")
-            // .style("text-anchor", "middle")
-            // .style("fill", "gray")
-            // .attr("font-weight", 700)
-            // .text("Birth Year");
-
-            // svg.append("text")             
-            //     .attr("transform",
-            //             "translate(" + (0.5 * width) + " ," + 
-            //                         (margin.top + 5) + ")")
-            //     .style("text-anchor", "right")
-            //     .style("font-size", 16)
-            //     .style("fill", "#0D7680")
-            //     .text("Celine Dion: My heart will go on");
-
-            // svg.append("text")             
-            //     .attr("transform",
-            //             "translate(" + (0.87 * width) + " ," + 
-            //                         (margin.top + 120) + ")")
-            //     .style("text-anchor", "right")
-            //     .style("font-size", 16)
-            //     .style("fill", "#832b3b")
-            //     .text("R.E.M: Losing My Religion");
-
-            // svg.append("text")             
-            //     .attr("transform",
-            //             "translate(" + (width * 0.025) + " ," + 
-            //                         (height + margin.top + 50) + ")")
-            //     .style("text-anchor", "right")
-            //     .text("Source: Music Quiz")
-            //     .style("fill", "gray")
-            //     .style("font-size", 12);
-
+   
       }
 
       small_multiple("x3d_printer", 0)
